@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "iKiMIZDCMwQ=",
+  "success": true,
+  "projectFilePath": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\s2300900\\.nuget\\packages\\microsoft.toolkit.highperformance\\7.1.2\\microsoft.toolkit.highperformance.7.1.2.nupkg.sha512",
+    "C:\\Users\\s2300900\\.nuget\\packages\\raylib-cslo\\4.2.0.9\\raylib-cslo.4.2.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}
