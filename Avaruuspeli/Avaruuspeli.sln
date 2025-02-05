@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avaruuspeli", "Avaruuspeli\Avaruuspeli.csproj", "{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avaruuspeli", "Avaruuspeli\Avaruuspeli.csproj", "{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{330FE085-881B-4601-8D65-096E6EFBA10A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

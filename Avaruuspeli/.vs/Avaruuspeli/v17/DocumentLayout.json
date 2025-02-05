@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\levelloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\levelloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\invanders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\invanders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\bullet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|solutionrelative:avaruuspeli\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{208D7075-0BDC-479A-AF9E-1EE49B1A0DD4}|Avaruuspeli\\Avaruuspeli.csproj|c:\\.net\\osa_2\\avaruuspeli\\avaruuspeli\\avaruuspeli\\collisioncomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -50,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
@@ -60,7 +64,7 @@
               "RelativeDocumentMoniker": "Avaruuspeli\\Invanders.cs",
               "ToolTip": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Invanders.cs",
               "RelativeToolTip": "Avaruuspeli\\Invanders.cs",
-              "ViewState": "AgIAALEAAAAAAAAAAAAAwL4AAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAswJkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-03T10:39:16.202Z",
               "IsPinned": true,
@@ -68,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Player.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\Player.cs",
@@ -82,7 +86,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Enemy.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Enemy.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\Enemy.cs",
@@ -91,11 +95,25 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-03T10:38:52.992Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
+              "Title": "LevelLoader.cs",
+              "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\LevelLoader.cs",
+              "RelativeDocumentMoniker": "Avaruuspeli\\LevelLoader.cs",
+              "ToolTip": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\LevelLoader.cs",
+              "RelativeToolTip": "Avaruuspeli\\LevelLoader.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-05T14:12:01.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "SpriteRendererComponent.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\SpriteRendererComponent.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\SpriteRendererComponent.cs",
@@ -103,11 +121,12 @@
               "RelativeToolTip": "Avaruuspeli\\SpriteRendererComponent.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAIwCUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:40:50.102Z"
+              "WhenOpened": "2025-01-03T10:40:50.102Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Program.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\Program.cs",
@@ -115,11 +134,12 @@
               "RelativeToolTip": "Avaruuspeli\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:33:34.967Z"
+              "WhenOpened": "2025-01-03T10:33:34.967Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "SettingsMenu.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\SettingsMenu.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\SettingsMenu.cs",
@@ -127,23 +147,12 @@
               "RelativeToolTip": "Avaruuspeli\\SettingsMenu.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:40:22.798Z"
+              "WhenOpened": "2025-01-03T10:40:22.798Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "TransformComponent.cs",
-              "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\TransformComponent.cs",
-              "RelativeDocumentMoniker": "Avaruuspeli\\TransformComponent.cs",
-              "ToolTip": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\TransformComponent.cs",
-              "RelativeToolTip": "Avaruuspeli\\TransformComponent.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:41:10.577Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Bullet.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Bullet.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\Bullet.cs",
@@ -151,11 +160,25 @@
               "RelativeToolTip": "Avaruuspeli\\Bullet.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAYwB4AAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:38:14.103Z"
+              "WhenOpened": "2025-01-03T10:38:14.103Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
+              "Title": "TransformComponent.cs",
+              "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\TransformComponent.cs",
+              "RelativeDocumentMoniker": "Avaruuspeli\\TransformComponent.cs",
+              "ToolTip": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\TransformComponent.cs",
+              "RelativeToolTip": "Avaruuspeli\\TransformComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-03T10:41:10.577Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "CollisionComponent.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\CollisionComponent.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\CollisionComponent.cs",
@@ -163,11 +186,12 @@
               "RelativeToolTip": "Avaruuspeli\\CollisionComponent.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:38:39.492Z"
+              "WhenOpened": "2025-01-03T10:38:39.492Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "MainMenu.cs",
               "DocumentMoniker": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\MainMenu.cs",
               "RelativeDocumentMoniker": "Avaruuspeli\\MainMenu.cs",
@@ -175,7 +199,8 @@
               "RelativeToolTip": "Avaruuspeli\\MainMenu.cs",
               "ViewState": "AgIAAEUAAAAAAAAAAAAUwGIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:39:50.565Z"
+              "WhenOpened": "2025-01-03T10:39:50.565Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -34,3 +34,4 @@ C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Debug\net8.0\data\images\e
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Debug\net8.0\data\images\enemyBlack4.png
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Debug\net8.0\data\images\enemyBlack5.png
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Debug\net8.0\data\images\laserGreen13.png
+C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Debug\net8.0\TiledSharp.dll

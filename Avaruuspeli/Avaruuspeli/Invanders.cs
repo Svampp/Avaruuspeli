@@ -1,5 +1,7 @@
 ﻿using Raylib_CsLo;
 using System.Numerics;
+using System.Collections.Generic;
+using TiledSharp;
 
 namespace Avaruuspeli
 {
@@ -29,9 +31,9 @@ namespace Avaruuspeli
         List<Bullet> bullets;
         List<Enemy> enemies;
 
-        Camera2D camera; // Camera
-
         int enemiesDefeated = 0; // Number of defeated enemies
+        int currentLevelIndex = 1; // Current level index
+        const int totalLevels = 2; // Total number of levels
 
         List<Vector2> stars; // Coordinates of stars
         int numStars = 100; // Number of stars
@@ -95,14 +97,6 @@ namespace Avaruuspeli
             settingsMenu.BackButtonPressed += OnSettingsBackButtonPressed;
 
             state = GameState.StartMenu;
-
-            // Initialize camera
-            camera = new Camera2D
-            {
-                target = new Vector2(WindowWidth / 2, WindowHeight / 2),
-                offset = new Vector2(WindowWidth / 2, WindowHeight / 2),
-                zoom = 1.0f
-            };
         }
 
         /// <summary>
@@ -138,67 +132,46 @@ namespace Avaruuspeli
             state = GameState.StartMenu;
         }
 
-        /// <summary>
-        /// Resets game data before starting a new game.
-        /// </summary>
         void ResetGame()
         {
-            enemiesDefeated = 0; // Reset the number of defeated enemies
-
+            enemiesDefeated = 0; // Сбросим количество побежденных врагов
             gameStartTime = Raylib.GetTime();
             gameEndTime = 0;
             scoreCounter = 0;
 
-            // Изменяем начальную позицию игрока
+            // Зададим начальную позицию игрока
             var playerStart = new Vector2(WindowWidth / 2, WindowHeight - 40); // Спавн в самом низу экрана
             player = new Player(playerStart, Vector2.Zero, 120, 40, playerImage);
 
             bullets = new List<Bullet>();
-            enemies = CreateEnemies();
+
+            // Загрузка уровня Level1
+            var currentLevel = LevelLoader.LoadLevel($"data/levels/Level{currentLevelIndex}.tmx");
+            enemies = CreateEnemies(currentLevel);
         }
 
-        /// <summary>
-        /// Creates the enemy formation.
-        /// </summary>
-        List<Enemy> CreateEnemies()
+        List<Enemy> CreateEnemies(List<EnemyData> enemyDataList)
         {
             var enemies = new List<Enemy>();
-            const int numberOfEnemies = 20; // Увеличим количество врагов
-            const int enemySize = 40;
-            const int minSpeed = 40, maxSpeed = 100; // Скорость движения врагов
-            const int minY = 0, maxY = WindowHeight / 2; // Разброс врагов по высоте (верхняя половина экрана)
-            const int spacing = 50; // Минимальное расстояние между врагами
-
-            for (int i = 0; i < numberOfEnemies; i++)
+            foreach (var enemyData in enemyDataList)
             {
-                float randomX, randomY;
-                bool validPosition;
+                var enemyType = enemyData.Type;
+                var position = enemyData.Position;
 
-                do
+                // Здесь можно добавить различные типы врагов
+                switch (enemyType)
                 {
-                    validPosition = true;
-                    randomX = Raylib.GetRandomValue(0, WindowWidth - enemySize);
-                    randomY = Raylib.GetRandomValue(minY, maxY);
-
-                    foreach (var enemy in enemies)
-                    {
-                        if (Vector2.Distance(new Vector2(randomX, randomY), enemy.transform.position) < spacing)
-                        {
-                            validPosition = false;
-                            break;
-                        }
-                    }
-                } while (!validPosition);
-
-                float randomSpeed = Raylib.GetRandomValue(minSpeed, maxSpeed);
-                var position = new Vector2(randomX, randomY);
-                enemies.Add(new Enemy(position, new Vector2(0, 1), randomSpeed, enemySize, enemyImages[(int)Raylib.GetRandomValue(0, enemyImages.Count - 1)], 10));
+                    case 1:
+                        enemies.Add(new Enemy(position, new Vector2(0, 1), 60, 40, enemyImages[0], 10));
+                        break;
+                    case 2:
+                        enemies.Add(new Enemy(position, new Vector2(0, 1), 80, 40, enemyImages[1], 20));
+                        break;
+                        // добавьте другие типы врагов при необходимости
+                }
             }
-
             return enemies;
         }
-
-
 
         /// <summary>
         /// Main game loop.
@@ -245,7 +218,7 @@ namespace Avaruuspeli
         void UpdateGame()
         {
             UpdateStars();
-            UpdateCamera();
+            // UpdateCamera(); // Update camera if needed
 
             if (player.Update(WindowWidth, WindowHeight))
             {
@@ -262,69 +235,12 @@ namespace Avaruuspeli
 
             DrawBackground();
 
-            Raylib.BeginMode2D(camera);
+            // Raylib.BeginMode2D(camera); // Use if camera is implemented
 
             DrawGameObjects();
-            Raylib.EndMode2D();
+            // Raylib.EndMode2D(); // Use if camera is implemented
 
             Raylib.EndDrawing();
-        }
-
-        void DrawBackground()
-        {
-            foreach (var star in stars)
-            {
-                Raylib.DrawCircle((int)star.X, (int)star.Y, 2, Raylib.WHITE);
-            }
-        }
-
-
-        void UpdateCamera()
-        {
-            camera.target = player.transform.position;
-
-            float cameraSpeed = 200 * Raylib.GetFrameTime();
-
-            // Allow moving the camera using arrow keys (up/down)
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_UP)) camera.target.Y -= cameraSpeed;
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN)) camera.target.Y += cameraSpeed;
-
-            // Make sure the camera stays within the game boundaries
-            camera.target.Y = Math.Clamp(camera.target.Y, WindowHeight / 2, WindowHeight - 100);
-        }
-
-        void DrawGameObjects()
-        {
-            // Piirrä pelaaja
-            player.Draw();
-
-            // Piirrä viholliset ja luodit vain, jos ne ovat kameran alueella
-            Rectangle cameraBounds = GetCameraBounds();
-            foreach (var enemy in enemies)
-            {
-                if (enemy.active && Raylib.CheckCollisionRecs(GetRectangle(enemy.transform, enemy.collision), cameraBounds))
-                {
-                    enemy.Draw();
-                }
-            }
-
-            foreach (var bullet in bullets)
-            {
-                if (bullet.active && Raylib.CheckCollisionRecs(GetRectangle(bullet.transform, bullet.collision), cameraBounds))
-                {
-                    bullet.Draw();
-                }
-            }
-        }
-
-        Rectangle GetCameraBounds()
-        {
-            float left = camera.target.X - (camera.offset.X / camera.zoom);
-            float top = camera.target.Y - (camera.offset.Y / camera.zoom);
-            float width = WindowWidth / camera.zoom;
-            float height = WindowHeight / camera.zoom;
-
-            return new Rectangle(left, top, width, height);
         }
 
         void UpdateScoreScreen()
@@ -368,10 +284,9 @@ namespace Avaruuspeli
             {
                 if (enemy.active)
                 {
-                    // Обновляем позицию врага (движение вниз)
                     enemy.Update();
 
-                    // Если враг выходит за пределы экрана, деактивируем его
+                    // If an enemy goes off-screen
                     if (enemy.transform.position.Y > WindowHeight)
                     {
                         enemy.active = false;
@@ -379,24 +294,19 @@ namespace Avaruuspeli
                 }
             }
 
-            // Проверка, если все враги уничтожены
+            // Check if all enemies are defeated
             if (!enemies.Any(e => e.active))
             {
                 gameEndTime = Raylib.GetTime();
+                // Переход на следующий уровень
+                currentLevelIndex++;
+                if (currentLevelIndex > totalLevels)
+                {
+                    // Если это был последний уровень, закончить игру
+                    currentLevelIndex = 1; // или как-то по-другому обработать конец игры
+                }
                 state = GameState.ScoreScreen;
             }
-        }
-
-
-        Enemy FindShootingEnemy()
-        {
-            var activeEnemies = enemies.Where(e => e.active).ToList();
-            if (activeEnemies.Count > 0)
-            {
-                Random random = new Random();
-                return activeEnemies[random.Next(activeEnemies.Count)];
-            }
-            return null;
         }
 
         void UpdateBullets()
@@ -440,6 +350,13 @@ namespace Avaruuspeli
                             if (!enemies.Any(e => e.active))
                             {
                                 gameEndTime = Raylib.GetTime();
+                                // Переход на следующий уровень
+                                currentLevelIndex++;
+                                if (currentLevelIndex > totalLevels)
+                                {
+                                    // Если это был последний уровень, закончить игру
+                                    currentLevelIndex = 1; // или как-то по-другому обработать конец игры
+                                }
                                 state = GameState.ScoreScreen;
                             }
 
@@ -463,20 +380,25 @@ namespace Avaruuspeli
             }
         }
 
-        void DrawGame()
+        void DrawGameObjects()
         {
-            Raylib.DrawCircleGradient(WindowWidth / 2, WindowHeight / 2, WindowHeight, Raylib.BLACK, Raylib.BLUE);
+            player.Draw();
+            foreach (var enemy in enemies) if (enemy.active) enemy.Draw();
+            foreach (var bullet in bullets) if (bullet.active) bullet.Draw();
+            Raylib.DrawText($"Score: {scoreCounter}", 10, 10, 20, Raylib.WHITE);
+        }
 
+        void DrawBackground()
+        {
             foreach (var star in stars)
             {
                 Raylib.DrawCircle((int)star.X, (int)star.Y, 2, Raylib.WHITE);
             }
+        }
 
-            player.Draw();
-            foreach (var enemy in enemies) if (enemy.active) enemy.Draw();
-            foreach (var bullet in bullets) if (bullet.active) bullet.Draw();
-
-            Raylib.DrawText($"Score: {scoreCounter}", 10, 10, 20, Raylib.WHITE);
+        Rectangle GetRectangle(TransformComponent transform, CollisionComponent collision)
+        {
+            return new Rectangle(transform.position.X, transform.position.Y, collision.size.X, collision.size.Y);
         }
 
         void DrawScoreScreen(string resultText)
@@ -502,11 +424,6 @@ namespace Avaruuspeli
             Raylib.DrawText(enemiesText, WindowWidth / 2 - enemiesWidth / 2, WindowHeight / 2 - 60, fontSize, Raylib.WHITE);
             Raylib.DrawText(timeText, WindowWidth / 2 - timeWidth / 2, WindowHeight / 2 - 40, fontSize, Raylib.WHITE);
             Raylib.DrawText(instructionText, WindowWidth / 2 - instructionWidth / 2, WindowHeight / 2, fontSize, Raylib.WHITE);
-        }
-
-        Rectangle GetRectangle(TransformComponent transform, CollisionComponent collision)
-        {
-            return new Rectangle(transform.position.X, transform.position.Y, collision.size.X, collision.size.Y);
         }
     }
 }

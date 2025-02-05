@@ -80,6 +80,15 @@
             "rid": "win-x86"
           }
         }
+      },
+      "TiledSharp/1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/TiledSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/TiledSharp.dll": {}
+        }
       }
     }
   },
@@ -145,11 +154,24 @@
         "runtimes/win-x64/native/raylib.pdb",
         "runtimes/win-x86/native/needs-pr.txt"
       ]
+    },
+    "TiledSharp/1.0.1": {
+      "sha512": "nY88Ux4Yj4aQ1QEP54KZwQ/QMrXSplGpqOxhab6SgkRminHv0PCrwZ9XBfFj0XSgy9omVFIeFrkig9ldXPKp3g==",
+      "type": "package",
+      "path": "tiledsharp/1.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/TiledSharp.dll",
+        "tiledsharp.1.0.1.nupkg.sha512",
+        "tiledsharp.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Raylib-CsLo >= 4.2.0.9"
+      "Raylib-CsLo >= 4.2.0.9",
+      "TiledSharp >= 1.0.1"
     ]
   },
   "packageFolders": {
@@ -205,6 +227,10 @@
           "Raylib-CsLo": {
             "target": "Package",
             "version": "[4.2.0.9, )"
+          },
+          "TiledSharp": {
+            "target": "Package",
+            "version": "[1.0.1, )"
           }
         },
         "imports": [
