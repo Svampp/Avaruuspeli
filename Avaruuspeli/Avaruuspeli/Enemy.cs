@@ -15,20 +15,31 @@ namespace Avaruuspeli
         public bool active; // Activity flag
         public int scoreValue; // Points awarded for destroying the enemy
 
-        public Enemy(Vector2 startPosition, Vector2 direction, float speed, int size, Texture image, int score)
+
+        // Конструктор изменен для случайной позиции по X и фиксированного движения вниз
+        public Enemy(float speed, int size, Texture image, int score)
         {
-            transform = new TransformComponent(startPosition, direction, speed);
+            // Случайная позиция по оси X, от 0 до ширины окна
+            float randomX = Raylib.GetRandomValue(0, Raylib.GetScreenWidth());
+            transform = new TransformComponent(new Vector2(randomX, 0), new Vector2(0, 1), speed); // движение вниз по Y
             collision = new CollisionComponent(new Vector2(size, size));
             spriteRenderer = new SpriteRendererComponent(image, Raylib.RED, transform, collision);
             active = true;
             scoreValue = score;
         }
 
+        // Обновление врага, движение вниз
         public void Update()
         {
             if (active)
             {
                 transform.position += transform.direction * transform.speed * Raylib.GetFrameTime();
+
+                // Проверяем, если враг вышел за пределы экрана
+                if (transform.position.Y > Raylib.GetScreenHeight())
+                {
+                    active = false; // деактивируем врага, если он выходит за экран
+                }
             }
         }
 
