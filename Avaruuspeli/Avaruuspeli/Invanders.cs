@@ -149,7 +149,8 @@ namespace Avaruuspeli
             gameEndTime = 0;
             scoreCounter = 0;
 
-            var playerStart = new Vector2(WindowWidth / 2, WindowHeight - 80);
+            // Изменяем начальную позицию игрока
+            var playerStart = new Vector2(WindowWidth / 2, WindowHeight - 40); // Спавн в самом низу экрана
             player = new Player(playerStart, Vector2.Zero, 120, 40, playerImage);
 
             bullets = new List<Bullet>();
@@ -166,21 +167,32 @@ namespace Avaruuspeli
             const int enemySize = 40;
             const int minSpeed = 40, maxSpeed = 100; // Скорость движения врагов
             const int minY = 0, maxY = WindowHeight / 2; // Разброс врагов по высоте (верхняя половина экрана)
+            const int spacing = 50; // Минимальное расстояние между врагами
 
             for (int i = 0; i < numberOfEnemies; i++)
             {
-                // Случайная позиция по оси X
-                float randomX = Raylib.GetRandomValue(0, WindowWidth - enemySize);
+                float randomX, randomY;
+                bool validPosition;
 
-                // Случайная высота на экране (не выше половины)
-                float randomY = Raylib.GetRandomValue(minY, maxY);
+                do
+                {
+                    validPosition = true;
+                    randomX = Raylib.GetRandomValue(0, WindowWidth - enemySize);
+                    randomY = Raylib.GetRandomValue(minY, maxY);
 
-                // Случайная скорость врага
+                    foreach (var enemy in enemies)
+                    {
+                        if (Vector2.Distance(new Vector2(randomX, randomY), enemy.transform.position) < spacing)
+                        {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                } while (!validPosition);
+
                 float randomSpeed = Raylib.GetRandomValue(minSpeed, maxSpeed);
-
-                // Создаем врага с начальной позицией на верхней части экрана
-                var position = new Vector2(randomX, randomY); // Начальная позиция врага
-                enemies.Add(new Enemy(position, new Vector2(0, 1), randomSpeed, enemySize, enemyImages[(int)Raylib.GetRandomValue(0, enemyImages.Count - 1)], 10)); // Враг двигается вниз
+                var position = new Vector2(randomX, randomY);
+                enemies.Add(new Enemy(position, new Vector2(0, 1), randomSpeed, enemySize, enemyImages[(int)Raylib.GetRandomValue(0, enemyImages.Count - 1)], 10));
             }
 
             return enemies;

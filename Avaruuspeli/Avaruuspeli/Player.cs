@@ -31,27 +31,13 @@ namespace Avaruuspeli
         public bool Update(int windowWidth, int windowHeight)
         {
             float deltaTime = Raylib.GetFrameTime();
-            Vector2 inputDirection = ReadDirectionInput();
+            Vector2 moveDirection = Vector2.Zero;
 
-            if (inputDirection.X == 0 && inputDirection.Y == 0)
-            {
+            // Keyboard controls
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_A)) moveDirection.X -= 1;
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_D)) moveDirection.X += 1;
 
-                transform.speed = 0;
-
-            }
-            else
-            {
-                // Accelerate towards max speed
-                transform.speed += 100 * deltaTime; // Adjust the acceleration rate as needed
-                if (transform.speed > 300) // Replace 300 with your desired max speed
-                {
-                    transform.speed = 300;
-                }
-                // Update direction
-                transform.direction = Vector2.Normalize(inputDirection);
-            }
-
-            // Apply speed and direction to position
+            transform.direction = moveDirection;
             transform.position += transform.direction * transform.speed * deltaTime;
 
             // Keep the player within screen bounds
@@ -70,6 +56,12 @@ namespace Avaruuspeli
             return false; // Player does not shoot
         }
 
+        void KeepInsideBounds(int windowWidth, int windowHeight)
+        {
+            transform.position.X = Math.Clamp(transform.position.X, 0, windowWidth - collision.size.X);
+            transform.position.Y = Math.Clamp(transform.position.Y, 0, windowHeight - collision.size.Y);
+        }
+
         /// <summary>
         /// Reads input direction from keyboard.
         /// </summary>
@@ -86,13 +78,6 @@ namespace Avaruuspeli
             if (Raylib.IsKeyDown(KeyboardKey.KEY_S)) moveDirection.Y += 1;  // Move down
 
             return moveDirection;
-        }
-
-
-        void KeepInsideBounds(int windowWidth, int windowHeight)
-        {
-            transform.position.X = Math.Clamp(transform.position.X, 0, windowWidth - collision.size.X);
-            transform.position.Y = Math.Clamp(transform.position.Y, 0, windowHeight - collision.size.Y);
         }
 
         public void Draw()
