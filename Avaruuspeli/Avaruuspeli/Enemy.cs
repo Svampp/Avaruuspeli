@@ -17,7 +17,7 @@ namespace Avaruuspeli
 
 
         // Конструктор изменен для случайной позиции по X и фиксированного движения вниз
-        public Enemy(float speed, int size, Texture image, int score)
+        public Enemy(Vector2 position, Vector2 vector2, float speed, int size, Texture image, int score)
         {
             // Случайная позиция по оси X, от 0 до ширины окна
             float randomX = Raylib.GetRandomValue(0, Raylib.GetScreenWidth());

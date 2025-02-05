@@ -180,7 +180,7 @@ namespace Avaruuspeli
 
                 // Создаем врага с начальной позицией на верхней части экрана
                 var position = new Vector2(randomX, randomY); // Начальная позиция врага
-                //enemies.Add(new Enemy(position, new Vector2(0, 1), randomSpeed, enemySize, enemyImages[Raylib.GetRandomValue(0, enemyImages.Count - 1)], 10)); // Враг двигается вниз
+                enemies.Add(new Enemy(position, new Vector2(0, 1), randomSpeed, enemySize, enemyImages[(int)Raylib.GetRandomValue(0, enemyImages.Count - 1)], 10)); // Враг двигается вниз
             }
 
             return enemies;
