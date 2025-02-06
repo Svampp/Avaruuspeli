@@ -2,9 +2,15 @@
 using System.Numerics;
 using TiledSharp;
 
+public class LevelData
+{
+    public List<EnemyData> Enemies { get; set; }
+    public TmxMap Map { get; set; }  // Добавляем саму карту
+}
+
 public class LevelLoader
 {
-    public static List<EnemyData> LoadLevel(string filePath)
+    public static LevelData LoadLevel(string filePath)
     {
         var map = new TmxMap(filePath);
         var enemies = new List<EnemyData>();
@@ -13,16 +19,20 @@ public class LevelLoader
         {
             if (objGroup.Name == "Enemies")
             {
+                Console.WriteLine($"Object groups in level: {string.Join(", ", map.ObjectGroups.Select(g => g.Name))}");
+
+
                 foreach (var obj in objGroup.Objects)
                 {
                     Vector2 position = new Vector2((float)obj.X, (float)obj.Y);
-                    int enemyType = int.Parse(obj.Type); // Предполагается, что тип врага указан в поле Type
+                    int enemyType = int.Parse(obj.Type);
                     enemies.Add(new EnemyData { Position = position, Type = enemyType });
                 }
             }
         }
 
-        return enemies;
+        Console.WriteLine($"Level loaded: {filePath}, Enemies Count: {enemies.Count}");
+        return new LevelData { Enemies = enemies, Map = map };
     }
 }
 

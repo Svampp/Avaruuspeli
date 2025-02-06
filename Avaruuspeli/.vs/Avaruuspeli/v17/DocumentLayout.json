@@ -64,7 +64,7 @@
               "RelativeDocumentMoniker": "Avaruuspeli\\Invanders.cs",
               "ToolTip": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\Invanders.cs",
               "RelativeToolTip": "Avaruuspeli\\Invanders.cs",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAswJkAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAMcAAAAAAAAAAAAowNUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-03T10:39:16.202Z",
               "IsPinned": true,
@@ -81,8 +81,7 @@
               "ViewState": "AgIAAAcAAAAAAAAAAAAIwFAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-03T10:40:02.931Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -95,8 +94,7 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-03T10:38:52.992Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -106,7 +104,7 @@
               "RelativeDocumentMoniker": "Avaruuspeli\\LevelLoader.cs",
               "ToolTip": "C:\\.net\\osa_2\\Avaruuspeli\\Avaruuspeli\\Avaruuspeli\\LevelLoader.cs",
               "RelativeToolTip": "Avaruuspeli\\LevelLoader.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-05T14:12:01.509Z",
               "EditorCaption": ""
@@ -121,8 +119,7 @@
               "RelativeToolTip": "Avaruuspeli\\SpriteRendererComponent.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAIwCUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:40:50.102Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:40:50.102Z"
             },
             {
               "$type": "Document",
@@ -134,8 +131,7 @@
               "RelativeToolTip": "Avaruuspeli\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:33:34.967Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:33:34.967Z"
             },
             {
               "$type": "Document",
@@ -147,8 +143,7 @@
               "RelativeToolTip": "Avaruuspeli\\SettingsMenu.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:40:22.798Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:40:22.798Z"
             },
             {
               "$type": "Document",
@@ -160,8 +155,7 @@
               "RelativeToolTip": "Avaruuspeli\\Bullet.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAYwB4AAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:38:14.103Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:38:14.103Z"
             },
             {
               "$type": "Document",
@@ -173,8 +167,7 @@
               "RelativeToolTip": "Avaruuspeli\\TransformComponent.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:41:10.577Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:41:10.577Z"
             },
             {
               "$type": "Document",
@@ -186,8 +179,7 @@
               "RelativeToolTip": "Avaruuspeli\\CollisionComponent.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:38:39.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:38:39.492Z"
             },
             {
               "$type": "Document",
@@ -199,8 +191,7 @@
               "RelativeToolTip": "Avaruuspeli\\MainMenu.cs",
               "ViewState": "AgIAAEUAAAAAAAAAAAAUwGIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T10:39:50.565Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-03T10:39:50.565Z"
             }
           ]
         }

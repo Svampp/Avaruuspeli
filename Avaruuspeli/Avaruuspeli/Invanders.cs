@@ -132,22 +132,65 @@ namespace Avaruuspeli
             state = GameState.StartMenu;
         }
 
+        LevelData currentLevel;
+        Dictionary<int, Texture> tilesetTextures = new Dictionary<int, Texture>();
+
         void ResetGame()
         {
-            enemiesDefeated = 0; // Сбросим количество побежденных врагов
+            enemiesDefeated = 0;
             gameStartTime = Raylib.GetTime();
             gameEndTime = 0;
             scoreCounter = 0;
 
-            // Зададим начальную позицию игрока
-            var playerStart = new Vector2(WindowWidth / 2, WindowHeight - 40); // Спавн в самом низу экрана
+            var playerStart = new Vector2(WindowWidth / 2, WindowHeight - 40);
             player = new Player(playerStart, Vector2.Zero, 120, 40, playerImage);
 
             bullets = new List<Bullet>();
 
-            // Загрузка уровня Level1
-            var currentLevel = LevelLoader.LoadLevel($"data/levels/Level{currentLevelIndex}.tmx");
-            enemies = CreateEnemies(currentLevel);
+            // Загружаем Level1 как фон (но не врагов)
+            currentLevel = LevelLoader.LoadLevel($"data/levels/Level{currentLevelIndex}.tmx");
+
+            // Загружаем фоновые тайлы
+            tilesetTextures.Clear();
+            foreach (var tileset in currentLevel.Map.Tilesets)
+            {
+                string tilesetPath = "data/images/Palette.png";
+                if (File.Exists(tilesetPath))
+                {
+                    tilesetTextures[tileset.FirstGid] = Raylib.LoadTexture(tilesetPath);
+                }
+                else
+                {
+                    Console.WriteLine($"ERROR: File not found -> {tilesetPath}");
+                }
+            }
+
+            // Создаем врагов вручную
+            var manualEnemies = CreateEnemiesManually();
+            enemies = CreateEnemies(manualEnemies);
+            Console.WriteLine($"Enemies created manually: {enemies.Count}");
+        }
+
+        List<EnemyData> CreateEnemiesManually()
+        {
+            var enemyDataList = new List<EnemyData>();
+            int rows = 2;
+            int cols = 5;
+            int startX = 100;
+            int startY = 50;
+            int spacingX = 80;
+            int spacingY = 60;
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    Vector2 position = new Vector2(startX + col * spacingX, startY + row * spacingY);
+                    int enemyType = (col % 2) + 1;
+                    enemyDataList.Add(new EnemyData { Position = position, Type = enemyType });
+                }
+            }
+            return enemyDataList;
         }
 
         List<Enemy> CreateEnemies(List<EnemyData> enemyDataList)
@@ -155,24 +198,22 @@ namespace Avaruuspeli
             var enemies = new List<Enemy>();
             foreach (var enemyData in enemyDataList)
             {
-                var enemyType = enemyData.Type;
-                var position = enemyData.Position;
+                int enemyType = enemyData.Type;
+                Vector2 position = enemyData.Position;
 
-                // Здесь можно добавить различные типы врагов
-                switch (enemyType)
+                if (enemyType < 1 || enemyType > 2)
                 {
-                    case 1:
-                        enemies.Add(new Enemy(position, new Vector2(0, 1), 60, 40, enemyImages[0], 10));
-                        break;
-                    case 2:
-                        enemies.Add(new Enemy(position, new Vector2(0, 1), 80, 40, enemyImages[1], 20));
-                        break;
-                        // добавьте другие типы врагов при необходимости
+                    Console.WriteLine($"Error: Invalid enemy type {enemyType} at {position}");
+                    continue;
                 }
+
+                Texture texture = enemyImages[enemyType - 1];
+                int scoreValue = enemyType == 1 ? 10 : 20;
+                enemies.Add(new Enemy(position, new Vector2(0, 1), 60, 40, texture, scoreValue));
             }
+
             return enemies;
         }
-
         /// <summary>
         /// Main game loop.
         /// </summary>
@@ -294,17 +335,12 @@ namespace Avaruuspeli
                 }
             }
 
-            // Check if all enemies are defeated
+            Console.WriteLine($"Enemies alive: {enemies.Count(e => e.active)}");
+
             if (!enemies.Any(e => e.active))
             {
+                Console.WriteLine("All enemies defeated, transitioning to ScoreScreen.");
                 gameEndTime = Raylib.GetTime();
-                // Переход на следующий уровень
-                currentLevelIndex++;
-                if (currentLevelIndex > totalLevels)
-                {
-                    // Если это был последний уровень, закончить игру
-                    currentLevelIndex = 1; // или как-то по-другому обработать конец игры
-                }
                 state = GameState.ScoreScreen;
             }
         }
@@ -350,14 +386,17 @@ namespace Avaruuspeli
                             if (!enemies.Any(e => e.active))
                             {
                                 gameEndTime = Raylib.GetTime();
-                                // Переход на следующий уровень
+                                // Transition to next level
                                 currentLevelIndex++;
                                 if (currentLevelIndex > totalLevels)
                                 {
-                                    // Если это был последний уровень, закончить игру
-                                    currentLevelIndex = 1; // или как-то по-другому обработать конец игры
+                                    // If it was the last level, end the game
+                                    currentLevelIndex = 1; // or handle game end differently
                                 }
                                 state = GameState.ScoreScreen;
+
+                                // Debugging log
+                                Console.WriteLine("All enemies defeated, transitioning to ScoreScreen.");
                             }
 
                             break;
@@ -383,18 +422,57 @@ namespace Avaruuspeli
         void DrawGameObjects()
         {
             player.Draw();
-            foreach (var enemy in enemies) if (enemy.active) enemy.Draw();
-            foreach (var bullet in bullets) if (bullet.active) bullet.Draw();
+            foreach (var enemy in enemies)
+            {
+                if (enemy.active) enemy.Draw();
+            }
+            foreach (var bullet in bullets)
+            {
+                if (bullet.active) bullet.Draw();
+            }
             Raylib.DrawText($"Score: {scoreCounter}", 10, 10, 20, Raylib.WHITE);
         }
 
         void DrawBackground()
         {
-            foreach (var star in stars)
+            if (currentLevel == null || currentLevel.Map == null) return;
+
+            foreach (var layer in currentLevel.Map.Layers)
             {
-                Raylib.DrawCircle((int)star.X, (int)star.Y, 2, Raylib.WHITE);
+                if (!layer.Visible || !(layer is TmxLayer tileLayer)) continue;
+
+                int layerWidth = currentLevel.Map.Width;  // Получаем ширину карты
+                int layerHeight = currentLevel.Map.Height; // Получаем высоту карты
+                int tileSize = currentLevel.Map.TileWidth; // Размер тайла
+
+                for (int y = 0; y < layerHeight; y++)
+                {
+                    for (int x = 0; x < layerWidth; x++)
+                    {
+                        int tileIndex = x + y * layerWidth; // Индекс тайла в массиве
+                        if (tileIndex >= tileLayer.Tiles.Count) continue; // Защита от выхода за границы массива
+
+                        int tileId = tileLayer.Tiles[tileIndex].Gid;
+                        if (tileId == 0) continue; // Пропускаем пустые тайлы
+
+                        foreach (var tileset in tilesetTextures)
+                        {
+                            if (tileId >= tileset.Key)
+                            {
+                                Texture texture = tileset.Value;
+                                Rectangle sourceRect = new Rectangle((tileId - tileset.Key) * tileSize, 0, tileSize, tileSize);
+                                Vector2 position = new Vector2(x * tileSize, y * tileSize);
+
+                                Raylib.DrawTextureRec(texture, sourceRect, position, Raylib.WHITE);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
+
+
 
         Rectangle GetRectangle(TransformComponent transform, CollisionComponent collision)
         {
