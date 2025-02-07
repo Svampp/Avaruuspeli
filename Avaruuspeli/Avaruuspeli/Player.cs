@@ -28,20 +28,28 @@ namespace Avaruuspeli
         /// <summary>
         /// Updates the player state (movement, shooting).
         /// </summary>
-        public bool Update(int windowWidth, int windowHeight)
+        public bool Update(int mapWidth, int mapHeight)
         {
             float deltaTime = Raylib.GetFrameTime();
             Vector2 moveDirection = Vector2.Zero;
 
+            float speed = 200.0f * Raylib.GetFrameTime();
+
             // Keyboard controls
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_A)) moveDirection.X -= 1;
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_D)) moveDirection.X += 1;
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_LEFT) || Raylib.IsKeyDown(KeyboardKey.KEY_A))
+                transform.position.X -= speed;
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT) || Raylib.IsKeyDown(KeyboardKey.KEY_D))
+                transform.position.X += speed;
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_UP) || Raylib.IsKeyDown(KeyboardKey.KEY_W))
+                transform.position.Y -= speed; // Двигаемся вверх
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN) || Raylib.IsKeyDown(KeyboardKey.KEY_S))
+                transform.position.Y += speed; // Двигаемся вниз
 
             transform.direction = moveDirection;
             transform.position += transform.direction * transform.speed * deltaTime;
 
             // Keep the player within screen bounds
-            KeepInsideBounds(windowWidth, windowHeight);
+            KeepInsideBounds(mapWidth, mapHeight);
 
             // Check for shooting
             if (Raylib.IsKeyDown(KeyboardKey.KEY_SPACE) || Raylib.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT))
@@ -56,10 +64,10 @@ namespace Avaruuspeli
             return false; // Player does not shoot
         }
 
-        void KeepInsideBounds(int windowWidth, int windowHeight)
+        void KeepInsideBounds(int mapWidth, int mapHeight)
         {
-            transform.position.X = Math.Clamp(transform.position.X, 0, windowWidth - collision.size.X);
-            transform.position.Y = Math.Clamp(transform.position.Y, 0, windowHeight - collision.size.Y);
+            transform.position.X = Math.Clamp(transform.position.X, 0, mapWidth - collision.size.X);
+            transform.position.Y = Math.Clamp(transform.position.Y, 0, mapHeight - collision.size.Y);
         }
 
         /// <summary>
