@@ -52,8 +52,7 @@ namespace Avaruuspeli
         Camera2D camera;
 
         int enemyDirection = 1; // 1 = вправо, -1 = влево
-
-
+        float enemySpeed = 150; // Увеличенная скорость врагов
 
         public void Run()
         {
@@ -148,12 +147,8 @@ namespace Avaruuspeli
             gameEndTime = 0;
             scoreCounter = 0;
 
-            //var playerStart = new Vector2(WindowWidth / 2, WindowHeight - 40);
-            //player = new Player(playerStart, Vector2.Zero, 120, 40, playerImage);
-
             bullets = new List<Bullet>();
 
-            // Загружаем Level1 как фон (но не врагов)
             currentLevel = LevelLoader.LoadLevel($"data/levels/Level{currentLevelIndex}.tmx");
 
             float playerX = currentLevel.Map.Width * currentLevel.Map.TileWidth / 2;
@@ -175,12 +170,6 @@ namespace Avaruuspeli
                 }
             }
 
-            // Создаем врагов вручную
-            //var manualEnemies = CreateEnemiesManually();
-            //enemies = CreateEnemies(manualEnemies);
-            //Console.WriteLine($"Enemies created manually: {enemies.Count}");
-
-
             enemies = CreateSpaceInvadersEnemies();
             Console.WriteLine($"Enemies created: {enemies.Count}");
 
@@ -191,7 +180,6 @@ namespace Avaruuspeli
                 rotation = 0,
                 zoom = 1.0f
             };
-
         }
 
         List<Enemy> CreateSpaceInvadersEnemies()
@@ -199,7 +187,7 @@ namespace Avaruuspeli
             var enemies = new List<Enemy>();
 
             int rows = 4; // Количество рядов
-            int cols = 4; // Количество врагов в ряду
+            int cols = 5; // Количество врагов в ряду
             int startX = 100; // Отступ от левого края
             int startY = 50; // Отступ сверху
             int spacingX = 60; // Расстояние между врагами по X
@@ -210,19 +198,17 @@ namespace Avaruuspeli
                 for (int col = 0; col < cols; col++)
                 {
                     Vector2 position = new Vector2(startX + col * spacingX, startY + row * spacingY);
-                    int enemyType = (row % 2) + 1; // Чередуем тип врага
+                    int enemyType = row % enemyImages.Count; // Чередование типов врагов
 
-                    Texture enemyTexture = enemyImages[enemyType - 1];
-                    int enemyScore = enemyType == 1 ? 10 : 20;
+                    Texture enemyTexture = enemyImages[enemyType];
+                    int enemyScore = (4 - row) * 10;
 
-                    enemies.Add(new Enemy(position, Vector2.Zero, 60, 40, enemyTexture, enemyScore));
+                    enemies.Add(new Enemy(position, new Vector2(1, 0), enemySpeed, 40, enemyTexture, enemyScore));
                 }
             }
 
             return enemies;
         }
-
-
 
         /// <summary>
         /// Main game loop.
@@ -284,13 +270,25 @@ namespace Avaruuspeli
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Raylib.BLACK);
 
-            Raylib.BeginMode2D(camera); // Включаем камеру
+            Raylib.BeginMode2D(camera);
             DrawBackground();
             DrawGameObjects();
             Raylib.EndMode2D(); // Выключаем камеру
 
+            DrawHUD(); // ✅ Теперь интерфейс рисуется всегда сверху!
+
             Raylib.EndDrawing();
+
         }
+        void DrawHUD()
+        {
+            string scoreText = $"Score: {scoreCounter}";
+            int fontSize = 20;
+
+            // ✅ Рисуем текст в верхней части экрана, НЕ привязанной к камере
+            Raylib.DrawText(scoreText, 10, 10, fontSize, Raylib.WHITE);
+        }
+
 
         void PlayerShoot()
         {
@@ -310,23 +308,24 @@ namespace Avaruuspeli
             }
         }
 
-
         void UpdateCamera()
         {
             camera.target = player.transform.position; // Центрируем камеру на игроке
 
+            float minX = WindowWidth / 2;
+            float maxX = currentLevel.Map.Width * currentLevel.Map.TileWidth - WindowWidth / 2;
             float minY = WindowHeight / 2;
             float maxY = currentLevel.Map.Height * currentLevel.Map.TileHeight - WindowHeight / 2;
 
+            // ❗ Ограничиваем камеру, чтобы она не выходила за карту
+            camera.target.X = Math.Clamp(camera.target.X, minX, maxX);
             camera.target.Y = Math.Clamp(camera.target.Y, minY, maxY);
         }
 
 
-
-
         void UpdateScoreScreen()
         {
-            string resultText = player.active ? "You won!" : "Defeat";
+            string resultText = player.active ? "You won!" : "Game Over! You lost.";
 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
             {
@@ -340,9 +339,10 @@ namespace Avaruuspeli
             Raylib.EndDrawing();
         }
 
+
         void UpdateStars()
         {
-            float starSpeed = 40.0f; // Speed of stars
+            float starSpeed = 70.0f; // Speed of stars
             for (int i = 0; i < stars.Count; i++)
             {
                 Vector2 star = stars[i];
@@ -359,32 +359,64 @@ namespace Avaruuspeli
             }
         }
 
+        void PlayerLose()
+        {
+            Console.WriteLine("Game Over! Player lost.");
+            Console.WriteLine($"Last enemy position: {player.transform.position.Y}");
+
+            gameEndTime = Raylib.GetTime();
+            player.active = false;
+            state = GameState.ScoreScreen;
+        }
+
+
+
+
         void UpdateEnemies()
         {
-            float enemySpeed = 30.0f * Raylib.GetFrameTime(); // Скорость врагов
+            float deltaTime = Raylib.GetFrameTime();
             bool changeDirection = false;
 
-            foreach (var enemy in enemies)
+            for (int i = enemies.Count - 1; i >= 0; i--) // Проходим список с конца
             {
-                if (!enemy.active) continue;
+                var enemy = enemies[i];
 
-                enemy.transform.position.X += enemyDirection * enemySpeed;
+                if (!enemy.active)
+                {
+                    Console.WriteLine($"Removing enemy at {enemy.transform.position.Y}"); // ❗ Проверяем удаление
+                    enemies.RemoveAt(i); // ❗ Полностью удаляем мёртвого врага
+                    continue;
+                }
 
-                // Проверяем, достиг ли враг края экрана
+                enemy.transform.position.X += enemyDirection * enemySpeed * deltaTime;
+
+                // Если враг достиг края экрана, меняем направление
                 if (enemy.transform.position.X < 20 || enemy.transform.position.X > WindowWidth - 80)
                 {
                     changeDirection = true;
                 }
+
+                Rectangle enemyRect = GetRectangle(enemy.transform, enemy.collision);
+                Rectangle playerRect = GetRectangle(player.transform, player.collision);
+
+                // ✅ Новый код (учитывает и X, и Y)
+                if (Raylib.CheckCollisionRecs(enemyRect, playerRect))
+                {
+                    Console.WriteLine($"Enemy {i} at {enemy.transform.position} collided with player at {player.transform.position}. Game Over!");
+                    PlayerLose();
+                    return;
+                }
+
             }
 
             // Если хотя бы один враг достиг края — меняем направление и опускаем их вниз
             if (changeDirection)
             {
-                enemyDirection *= -1; // Меняем направление
+                enemyDirection *= -1;
 
                 foreach (var enemy in enemies)
                 {
-                    enemy.transform.position.Y += 10; // Опускаем врагов вниз
+                    enemy.transform.position.Y += 10;
                 }
             }
 
@@ -395,15 +427,9 @@ namespace Avaruuspeli
                 lastEnemyShootTime = Raylib.GetTime();
             }
 
-            Console.WriteLine($"Enemies alive: {enemies.Count(e => e.active)}");
-
-            if (!enemies.Any(e => e.active))
-            {
-                Console.WriteLine("All enemies defeated, transitioning to ScoreScreen.");
-                gameEndTime = Raylib.GetTime();
-                state = GameState.ScoreScreen;
-            }
+            Console.WriteLine($"Enemies alive: {enemies.Count}");
         }
+
 
 
 
@@ -416,6 +442,9 @@ namespace Avaruuspeli
             {
                 Enemy shooter = activeEnemies[random.Next(activeEnemies.Count)]; // Случайный враг стреляет
                 var bulletStart = shooter.transform.position + new Vector2(20, 20);
+
+                Console.WriteLine($"Enemy shot from position: {bulletStart.Y}"); // ❗ Проверяем координаты
+
                 bullets.Add(new Bullet(bulletStart, new Vector2(0, 1), 200, 16, bulletImage, Raylib.RED)); // Вражеская пуля
             }
         }
@@ -423,25 +452,48 @@ namespace Avaruuspeli
 
         void UpdateBullets()
         {
-            foreach (var bullet in bullets)
+            for (int i = bullets.Count - 1; i >= 0; i--) // Проходим список в обратном порядке
             {
+                var bullet = bullets[i];
+
                 if (bullet.active)
                 {
                     bullet.Update();
-                    if (bullet.transform.position.Y < 0) bullet.active = false;
+
+                    // ❗ Пули удаляются, только если они ВНЕ карты
+                    if (bullet.transform.position.Y < -50 || bullet.transform.position.Y > currentLevel.Map.Height * currentLevel.Map.TileHeight + 50)
+                    {
+                        bullets.RemoveAt(i); // Удаляем пулю из списка
+                    }
                 }
             }
         }
+
+
 
         void CheckCollisions()
         {
             Rectangle playerRect = GetRectangle(player.transform, player.collision);
 
-            foreach (var enemy in enemies)
+            for (int i = enemies.Count - 1; i >= 0; i--) // Проходим список в обратном порядке
             {
-                if (!enemy.active) continue;
+                var enemy = enemies[i];
+
+                if (!enemy.active)
+                {
+                    enemies.RemoveAt(i); // ❗ Удаляем мёртвого врага из списка
+                    continue;
+                }
 
                 Rectangle enemyRect = GetRectangle(enemy.transform, enemy.collision);
+
+                // ❗ Если игрок сталкивается с врагом — проигрыш
+                if (Raylib.CheckCollisionRecs(playerRect, enemyRect))
+                {
+                    Console.WriteLine("Player collided with enemy! Game Over.");
+                    PlayerLose();
+                    return;
+                }
 
                 foreach (var bullet in bullets)
                 {
@@ -453,7 +505,7 @@ namespace Avaruuspeli
                     {
                         if (Raylib.CheckCollisionRecs(bulletRect, enemyRect))
                         {
-                            enemy.active = false;
+                            enemies.RemoveAt(i); // ❗ Удаляем врага из списка при попадании
                             bullet.active = false;
                             scoreCounter += enemy.scoreValue;
                             enemiesDefeated++;
@@ -462,19 +514,15 @@ namespace Avaruuspeli
                             if (!enemies.Any(e => e.active))
                             {
                                 gameEndTime = Raylib.GetTime();
-                                // Transition to next level
                                 currentLevelIndex++;
                                 if (currentLevelIndex > totalLevels)
                                 {
-                                    // If it was the last level, end the game
-                                    currentLevelIndex = 1; // or handle game end differently
+                                    currentLevelIndex = 1;
                                 }
                                 state = GameState.ScoreScreen;
 
-                                // Debugging log
                                 Console.WriteLine("All enemies defeated, transitioning to ScoreScreen.");
                             }
-
                             break;
                         }
                     }
@@ -484,16 +532,16 @@ namespace Avaruuspeli
                         {
                             bullet.active = false;
                             player.active = false;
-
-                            gameEndTime = Raylib.GetTime();
-                            state = GameState.ScoreScreen;
-
-                            break;
+                            PlayerLose();
+                            return;
                         }
                     }
                 }
             }
         }
+
+
+
 
         void DrawGameObjects()
         {
@@ -506,8 +554,10 @@ namespace Avaruuspeli
             {
                 if (bullet.active) bullet.Draw();
             }
-            Raylib.DrawText($"Score: {scoreCounter}", 10, 10, 20, Raylib.WHITE);
+
         }
+
+
 
         void DrawBackground()
         {
@@ -547,8 +597,6 @@ namespace Avaruuspeli
                 }
             }
         }
-
-
 
         Rectangle GetRectangle(TransformComponent transform, CollisionComponent collision)
         {
