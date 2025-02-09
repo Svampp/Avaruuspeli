@@ -25,11 +25,14 @@ namespace Avaruuspeli
         const int WindowHeight = 720;
 
         double lastEnemyShootTime = 0; // Time of the last enemy shot
-        double enemyShootInterval = 2.0; // Interval between enemy shots
+        const double baseEnemyShootInterval = 2.0; // Базовый интервал между выстрелами врагов
+        double enemyShootInterval = baseEnemyShootInterval; // Текущий интервал между выстрелами врагов
 
         Player player;
         List<Bullet> bullets;
         List<Enemy> enemies;
+        List<Explosion> explosions = new List<Explosion>();
+
 
         int enemiesDefeated = 0; // Number of defeated enemies
         int currentLevelIndex = 1; // Current level index
@@ -47,12 +50,17 @@ namespace Avaruuspeli
         Texture playerImage;
         List<Texture> enemyImages;
         Texture bulletImage;
-        Sound enemyExplode;
+        Music backgroundMusic;
+        Sound playerShootSound;
+        Sound enemyShootSound;
+
+
 
         Camera2D camera;
 
         int enemyDirection = 1; // 1 = вправо, -1 = влево
-        float enemySpeed = 150; // Увеличенная скорость врагов
+        const float baseEnemySpeed = 150; // Базовая скорость врагов
+        float enemySpeed = baseEnemySpeed; // Текущая скорость врагов
 
         public void Run()
         {
@@ -74,7 +82,13 @@ namespace Avaruuspeli
             // Loading resources
             playerImage = Raylib.LoadTexture("data/images/player.png");
             bulletImage = Raylib.LoadTexture("data/images/laserGreen13.png");
-            enemyExplode = Raylib.LoadSound("data/audio/EnemyExplode.wav");
+            playerShootSound = Raylib.LoadSound("data/sounds/PlayerShoot.wav");
+            enemyShootSound = Raylib.LoadSound("data/sounds/EnemyShoot.wav");
+
+            // Play background music
+            backgroundMusic = Raylib.LoadMusicStream("data/sounds/Background.wav");
+            Raylib.PlayMusicStream(backgroundMusic);
+            Raylib.SetMusicVolume(backgroundMusic, 1f);
 
             // Loading enemy images
             enemyImages = new List<Texture>
@@ -110,8 +124,11 @@ namespace Avaruuspeli
         void Cleanup()
         {
             Raylib.UnloadTexture(playerImage);
-            Raylib.UnloadSound(enemyExplode);
 
+            Raylib.UnloadMusicStream(backgroundMusic);
+
+            Raylib.UnloadSound(playerShootSound);
+            Raylib.UnloadSound(enemyShootSound);
             foreach (var enemyImage in enemyImages)
                 Raylib.UnloadTexture(enemyImage);
         }
@@ -148,6 +165,9 @@ namespace Avaruuspeli
             scoreCounter = 0;
 
             bullets = new List<Bullet>();
+
+            enemySpeed = baseEnemySpeed; // Сброс скорости врагов к базовому значению
+            enemyShootInterval = baseEnemyShootInterval; // Сброс интервала выстрелов врагов к базовому значению
 
             currentLevel = LevelLoader.LoadLevel($"data/levels/Level{currentLevelIndex}.tmx");
 
@@ -193,15 +213,24 @@ namespace Avaruuspeli
             int spacingX = 60; // Расстояние между врагами по X
             int spacingY = 50; // Расстояние между рядами по Y
 
+            // Adjust enemy settings for Level 2
+            if (currentLevelIndex == 2)
+            {
+                rows = 8; // Number of rows
+                cols = 5; // Number of columns
+                enemySpeed = baseEnemySpeed * 1.5f; // Increase enemy speed by 1.5 times
+                enemyShootInterval = baseEnemyShootInterval / 3; // Triple the shooting frequency
+            }
+
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
                 {
                     Vector2 position = new Vector2(startX + col * spacingX, startY + row * spacingY);
-                    int enemyType = row % enemyImages.Count; // Чередование типов врагов
+                    int enemyType = row % enemyImages.Count; // Alternate enemy types
 
                     Texture enemyTexture = enemyImages[enemyType];
-                    int enemyScore = (4 - row) * 10;
+                    int enemyScore = Math.Max((4 - row) * 10, 10); // Ensure score is non-negative
 
                     enemies.Add(new Enemy(position, new Vector2(1, 0), enemySpeed, 40, enemyTexture, enemyScore));
                 }
@@ -233,6 +262,12 @@ namespace Avaruuspeli
                         break;
                 }
             }
+            if (!Raylib.IsMusicStreamPlaying(backgroundMusic))
+            {
+                Console.WriteLine("Музыка не играет! Запускаем заново...");
+                Raylib.PlayMusicStream(backgroundMusic);
+            }
+
         }
 
         void UpdateStartMenu()
@@ -254,6 +289,8 @@ namespace Avaruuspeli
 
         void UpdateGame()
         {
+            Raylib.UpdateMusicStream(backgroundMusic);
+
             UpdateStars();
             player.Update(currentLevel.Map.Width * currentLevel.Map.TileWidth, currentLevel.Map.Height * currentLevel.Map.TileHeight); // Передаем размер карты
 
@@ -278,6 +315,14 @@ namespace Avaruuspeli
             DrawHUD(); // ✅ Теперь интерфейс рисуется всегда сверху!
 
             Raylib.EndDrawing();
+
+            float deltaTime = Raylib.GetFrameTime();
+            foreach (var explosion in explosions)
+            {
+                explosion.Update(deltaTime);
+            }
+            explosions.RemoveAll(e => e.IsFinished());
+
 
         }
         void DrawHUD()
@@ -306,6 +351,8 @@ namespace Avaruuspeli
                     Raylib.WHITE
                 ));
             }
+
+            Raylib.PlaySound(playerShootSound);
         }
 
         void UpdateCamera()
@@ -440,12 +487,20 @@ namespace Avaruuspeli
 
             if (activeEnemies.Count > 0)
             {
-                Enemy shooter = activeEnemies[random.Next(activeEnemies.Count)]; // Случайный враг стреляет
-                var bulletStart = shooter.transform.position + new Vector2(20, 20);
+                // In Level 2, three enemies shoot simultaneously
+                int numShooters = currentLevelIndex == 2 ? 3 : 1;
 
-                Console.WriteLine($"Enemy shot from position: {bulletStart.Y}"); // ❗ Проверяем координаты
+                for (int i = 0; i < numShooters; i++)
+                {
+                    Enemy shooter = activeEnemies[random.Next(activeEnemies.Count)]; // Случайный враг стреляет
+                    var bulletStart = shooter.transform.position + new Vector2(20, 20);
 
-                bullets.Add(new Bullet(bulletStart, new Vector2(0, 1), 200, 16, bulletImage, Raylib.RED)); // Вражеская пуля
+                    Console.WriteLine($"Enemy shot from position: {bulletStart.Y}"); // ❗ Проверяем координаты
+
+                    bullets.Add(new Bullet(bulletStart, new Vector2(0, 1), 200, 16, bulletImage, Raylib.RED)); // Вражеская пуля
+
+                    Raylib.PlaySound(enemyShootSound);
+                }
             }
         }
 
@@ -505,11 +560,11 @@ namespace Avaruuspeli
                     {
                         if (Raylib.CheckCollisionRecs(bulletRect, enemyRect))
                         {
+                            explosions.Add(new Explosion(enemy.transform.position)); // 🔥 Добавляем взрыв
                             enemies.RemoveAt(i); // ❗ Удаляем врага из списка при попадании
                             bullet.active = false;
                             scoreCounter += enemy.scoreValue;
                             enemiesDefeated++;
-                            Raylib.PlaySound(enemyExplode);
 
                             if (!enemies.Any(e => e.active))
                             {
@@ -543,6 +598,7 @@ namespace Avaruuspeli
 
 
 
+
         void DrawGameObjects()
         {
             player.Draw();
@@ -554,6 +610,12 @@ namespace Avaruuspeli
             {
                 if (bullet.active) bullet.Draw();
             }
+
+            foreach (var explosion in explosions)
+            {
+                explosion.Draw();
+            }
+
 
         }
 
