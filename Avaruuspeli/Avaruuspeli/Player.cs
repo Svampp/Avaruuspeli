@@ -41,9 +41,9 @@ namespace Avaruuspeli
             if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT) || Raylib.IsKeyDown(KeyboardKey.KEY_D))
                 transform.position.X += speed;
             if (Raylib.IsKeyDown(KeyboardKey.KEY_UP) || Raylib.IsKeyDown(KeyboardKey.KEY_W))
-                transform.position.Y -= speed; // Двигаемся вверх
+                transform.position.Y -= speed; 
             if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN) || Raylib.IsKeyDown(KeyboardKey.KEY_S))
-                transform.position.Y += speed; // Двигаемся вниз
+                transform.position.Y += speed; 
 
             transform.direction = moveDirection;
             transform.position += transform.direction * transform.speed * deltaTime;

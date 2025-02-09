@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v8.0": {
       "Avaruuspeli/1.0.0": {
         "dependencies": {
-          "Raylib-CsLo": "4.2.0.9"
+          "Raylib-CsLo": "4.2.0.9",
+          "TiledSharp": "1.0.1"
         },
         "runtime": {
           "Avaruuspeli.dll": {}
@@ -79,6 +80,14 @@
             "fileVersion": "0.0.0.0"
           }
         }
+      },
+      "TiledSharp/1.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/TiledSharp.dll": {
+            "assemblyVersion": "0.15.0.0",
+            "fileVersion": "0.15.0.0"
+          }
+        }
       }
     }
   },
@@ -101,6 +110,13 @@
       "sha512": "sha512-s0KLEXCfylhCgMfc0elHJyC7I2ZdqylQzSA1GhHwp7pPJmoQx80kZh5OkTbiirOuHSIeQ87JojEA439MarGhWQ==",
       "path": "raylib-cslo/4.2.0.9",
       "hashPath": "raylib-cslo.4.2.0.9.nupkg.sha512"
+    },
+    "TiledSharp/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nY88Ux4Yj4aQ1QEP54KZwQ/QMrXSplGpqOxhab6SgkRminHv0PCrwZ9XBfFj0XSgy9omVFIeFrkig9ldXPKp3g==",
+      "path": "tiledsharp/1.0.1",
+      "hashPath": "tiledsharp.1.0.1.nupkg.sha512"
     }
   }
 }

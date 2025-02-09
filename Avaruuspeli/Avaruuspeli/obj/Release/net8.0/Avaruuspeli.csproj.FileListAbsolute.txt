@@ -34,3 +34,4 @@ C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\obj\Release\net8.0\refint\Avar
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\obj\Release\net8.0\Avaruuspeli.pdb
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\obj\Release\net8.0\Avaruuspeli.genruntimeconfig.cache
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\obj\Release\net8.0\ref\Avaruuspeli.dll
+C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\TiledSharp.dll

@@ -13,6 +13,7 @@ C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\Ava
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\Avaruuspeli.pdb
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\Microsoft.Toolkit.HighPerformance.dll
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\Raylib-CsLo.dll
+C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\TiledSharp.dll
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\runtimes\linux-x64\native\libraylib.so
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\runtimes\linux-x64\native\readme.md
 C:\.net\osa_2\Avaruuspeli\Avaruuspeli\Avaruuspeli\bin\Release\net8.0\publish\runtimes\osx-arm64\native\libraylib.dylib
