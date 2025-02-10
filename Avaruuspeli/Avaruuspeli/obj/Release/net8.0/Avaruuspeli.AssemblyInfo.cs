@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Avaruuspeli")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b11d843adac3407277a4c8898a1df3e16483ba95")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad18977b9c5cd94bcd72cfeb63a58709f66adff8")]
 [assembly: System.Reflection.AssemblyProductAttribute("Avaruuspeli")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Avaruuspeli")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

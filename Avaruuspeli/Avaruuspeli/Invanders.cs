@@ -376,15 +376,25 @@ namespace Avaruuspeli
         {
             camera.target = player.transform.position; // Center the camera on the player
 
-            float minX = WindowWidth / 2;
-            float maxX = currentLevel.Map.Width * currentLevel.Map.TileWidth - WindowWidth / 2;
-            float minY = WindowHeight / 2;
-            float maxY = currentLevel.Map.Height * currentLevel.Map.TileHeight - WindowHeight / 2;
+            int mapWidth = currentLevel.Map.Width * currentLevel.Map.TileWidth;
+            int mapHeight = currentLevel.Map.Height * currentLevel.Map.TileHeight;
 
-            // Clamp the camera to stay within the map boundaries
+            // Проверяем, чтобы размеры карты были больше окна
+            if (mapWidth < WindowWidth) mapWidth = WindowWidth;
+            if (mapHeight < WindowHeight) mapHeight = WindowHeight;
+
+            float minX = WindowWidth / 2;
+            float maxX = mapWidth - WindowWidth / 2;
+            float minY = WindowHeight / 2;
+            float maxY = mapHeight - WindowHeight / 2;
+
+            // Отладочный вывод
+            Console.WriteLine($"Camera bounds: minX={minX}, maxX={maxX}, minY={minY}, maxY={maxY}");
+
             camera.target.X = Math.Clamp(camera.target.X, minX, maxX);
             camera.target.Y = Math.Clamp(camera.target.Y, minY, maxY);
         }
+
 
         /// <summary>
         /// Updates the score screen.
